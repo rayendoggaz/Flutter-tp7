@@ -12,7 +12,8 @@ class StudentScreen extends StatefulWidget {
 }
 
 class _StudentScreenState extends State<StudentScreen> {
-  String? selectedClass; // Selected class ID
+  String? selectedClass; // Selected class name
+  String? selectedClassId; // Selected class ID
   List<dynamic> classes = []; // List to store all classes
   List<dynamic> students = []; // List to store all students
   bool isLoadingClasses = true;  // Loading state for classes
@@ -48,7 +49,7 @@ class _StudentScreenState extends State<StudentScreen> {
 
     try {
       // If a class is selected, fetch students for that class; else fetch all students
-      students = await fetchStudentsByClass(selectedClass); // Use the fetch function that takes class ID
+      students = await fetchStudentsByClass(selectedClassId); // Use the fetch function that takes class ID
       setState(() {
         isLoadingStudents = false; // Set loading state to false after students are fetched
       });
@@ -72,7 +73,7 @@ class _StudentScreenState extends State<StudentScreen> {
               : Padding(
             padding: const EdgeInsets.all(8.0),
             child: DropdownButtonFormField<String>(
-              value: selectedClass,
+              value: selectedClassId,
               decoration: InputDecoration(
                 labelText: "Select Class",
                 border: OutlineInputBorder(
@@ -97,7 +98,7 @@ class _StudentScreenState extends State<StudentScreen> {
               }).toList(),
               onChanged: (value) {
                 setState(() {
-                  selectedClass = value?.isEmpty ?? true ? null : value;
+                  selectedClassId = value?.isEmpty ?? true ? null : value;
                   fetchStudents(); // Fetch students based on the selected class
                 });
               },
@@ -127,7 +128,6 @@ class _StudentScreenState extends State<StudentScreen> {
                                   student['dateNais'],
                                   student['nom'],
                                   student['prenom'],
-                                  student['id'],
                                 ),
                               );
                             },
